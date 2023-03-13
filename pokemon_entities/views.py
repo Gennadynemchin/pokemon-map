@@ -50,23 +50,41 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
-        pokemons = json.load(database)['pokemons']
-
+    pokemons = Pokemon.objects.all()
     for pokemon in pokemons:
-        if pokemon['pokemon_id'] == int(pokemon_id):
+        if pokemon.id == int(pokemon_id):
             requested_pokemon = pokemon
+            pokemon = {
+                "pokemon_id": requested_pokemon.id,
+                "title_ru": requested_pokemon.title,
+                "title_en": "Bulbasaur",
+                "title_jp": "フシギダネ",
+                "description": "cтартовый покемон двойного травяного и ядовитого типа из первого поколения и региона "
+                               "Канто. В национальном покедексе под номером 1. На 16 уровне эволюционирует в "
+                               "Ивизавра. Ивизавр на 32 уровне эволюционирует в Венузавра. Наряду с Чармандером и "
+                               "Сквиртлом, Бульбазавр является одним из трёх стартовых покемонов региона Канто.",
+                "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}'),
+                "next_evolution": {
+                    "title_ru": "Ивизавр",
+                    "pokemon_id": 2,
+                    "img_url": "https://vignette.wikia.nocookie.net/pokemon/images/7/73/002Ivysaur.png/revision"
+                               "/latest/scale-to-width-down/200?cb=20150703180624&path-prefix=ru "
+                }
+            }
             break
     else:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
-    for pokemon_entity in requested_pokemon['entities']:
-        add_pokemon(
-            folium_map, pokemon_entity['lat'],
-            pokemon_entity['lon'],
-            pokemon['img_url']
-        )
+    pokemon_entities = PokemonEntity.objects.filter(appeared_at__lt=localtime(),
+                                                    disappeared_at__gt=localtime(),
+                                                    pokemon=requested_pokemon)
+    for pokemon_entity in pokemon_entities:
+        add_pokemon(folium_map,
+                    pokemon_entity.lat,
+                    pokemon_entity.lon,
+                    request.build_absolute_uri(f'/media/{requested_pokemon.image}')
+                    )
 
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon
