@@ -54,27 +54,26 @@ def show_pokemon(request, pokemon_id):
     for pokemon in pokemons:
         if pokemon.id == int(pokemon_id):
             requested_pokemon = pokemon
-            if requested_pokemon.previous_evolution:
-                pass
             pokemon = {
                 "pokemon_id": requested_pokemon.id,
                 "title_ru": requested_pokemon.title_ru,
                 "title_en": requested_pokemon.title_en,
                 "title_jp": requested_pokemon.title_jp,
                 "description": requested_pokemon.description,
-                "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}'),
-                "next_evolution": {
-                    "title_ru": "Ивизавр",
-                    "pokemon_id": 2,
-                    "img_url": "https://vignette.wikia.nocookie.net/pokemon/images/7/73/002Ivysaur.png/revision"
-                               "/latest/scale-to-width-down/200?cb=20150703180624&path-prefix=ru "
-                },
-                "previous_evolution": {
+                "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}')
+            }
+            if requested_pokemon.previous_evolution:
+                pokemon['previous_evolution'] = {
                     "title_ru": requested_pokemon.previous_evolution,
-                    "pokemon_id": "test",
+                    "pokemon_id": requested_pokemon.id,
                     "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}')
                 }
-            }
+            '''if requested_pokemon.next_evolution:
+                pokemon['next_evolution'] = {
+                    "title_ru": requested_pokemon.next_evolution,
+                    "pokemon_id": requested_pokemon.id,
+                    "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}')
+                }'''
             break
     else:
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
