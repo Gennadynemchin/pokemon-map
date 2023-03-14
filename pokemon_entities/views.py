@@ -63,10 +63,11 @@ def show_pokemon(request, pokemon_id):
                 "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}')
             }
             if requested_pokemon.previous_evolution:
+                previous_evolution_img = request.build_absolute_uri(f'/media/{requested_pokemon.previous_evolution.image}')
                 pokemon['previous_evolution'] = {
                     "title_ru": requested_pokemon.previous_evolution,
                     "pokemon_id": requested_pokemon.id,
-                    "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}')
+                    "img_url": previous_evolution_img
                 }
             '''if requested_pokemon.next_evolution:
                 pokemon['next_evolution'] = {
