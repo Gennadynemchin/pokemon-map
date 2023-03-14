@@ -54,6 +54,8 @@ def show_pokemon(request, pokemon_id):
     for pokemon in pokemons:
         if pokemon.id == int(pokemon_id):
             requested_pokemon = pokemon
+            if requested_pokemon.previous_evolution:
+                pass
             pokemon = {
                 "pokemon_id": requested_pokemon.id,
                 "title_ru": requested_pokemon.title_ru,
@@ -66,6 +68,11 @@ def show_pokemon(request, pokemon_id):
                     "pokemon_id": 2,
                     "img_url": "https://vignette.wikia.nocookie.net/pokemon/images/7/73/002Ivysaur.png/revision"
                                "/latest/scale-to-width-down/200?cb=20150703180624&path-prefix=ru "
+                },
+                "previous_evolution": {
+                    "title_ru": requested_pokemon.previous_evolution,
+                    "pokemon_id": "test",
+                    "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}')
                 }
             }
             break
