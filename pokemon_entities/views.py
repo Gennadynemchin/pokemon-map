@@ -40,7 +40,7 @@ def show_all_pokemons(request):
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': request.build_absolute_uri(f'/media/{pokemon.image}'),
-            'title_ru': pokemon.title,
+            'title_ru': pokemon.title_ru,
         })
 
     return render(request, 'mainpage.html', context={
@@ -56,9 +56,9 @@ def show_pokemon(request, pokemon_id):
             requested_pokemon = pokemon
             pokemon = {
                 "pokemon_id": requested_pokemon.id,
-                "title_ru": requested_pokemon.title,
-                "title_en": "Bulbasaur",
-                "title_jp": "フシギダネ",
+                "title_ru": requested_pokemon.title_ru,
+                "title_en": requested_pokemon.title_en,
+                "title_jp": requested_pokemon.title_jp,
                 "description": requested_pokemon.description,
                 "img_url": request.build_absolute_uri(f'/media/{requested_pokemon.image}'),
                 "next_evolution": {
