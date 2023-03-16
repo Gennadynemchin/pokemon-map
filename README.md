@@ -1,9 +1,8 @@
 # Карта покемонов
 
-![screenshot](https://dvmn.org/filer/canonical/1563275070/172/)
+![screenshot](img.png)
 
-### Предметная область
-
+## Предметная область
 Сайт для помощи по игре [Pokemon GO](https://www.pokemongo.com/en-us/). Это игра про ловлю [покемонов](https://ru.wikipedia.org/wiki/%D0%9F%D0%BE%D0%BA%D0%B5%D0%BC%D0%BE%D0%BD).
 
 Суть игры в том, что на карте периодически появляются покемоны, на определённый промежуток времени. Каждый игрок может поймать себе покемона, и пополнить свою личную коллекцию.
@@ -12,32 +11,40 @@
 
 В игре есть механика эволюции. Покемон одного вида может "эволюционировать" в другого. Так, например, Бульбазавр превращается в Ивизавра, а тот превращается в Венузавра.
 
-![bulba evolution](https://dvmn.org/filer/canonical/1562265973/167/)
 
-### Как запустить
+## Setup
+1. Clone project
+```
+git clone https://github.com/Gennadynemchin/pokemon-map.git
+cd pokemon-map
+```
 
-Для запуска сайта вам понадобится Python третьей версии.
+2. Create virtual environment
+```
+python -m venv venv
+source venv/bin/activate
+```
 
-Скачайте код с GitHub. Затем установите зависимости
-
-```sh
+3. Install requirements
+```
 pip install -r requirements.txt
 ```
 
-Запустите разработческий сервер
-
-```sh
-python3 manage.py runserver
+4. Create database
+```
+python manage.py migrate
 ```
 
-### Переменные окружения
+5. Create Django superuser
+```
+python manage.py createsuperuser
+```
 
-Часть настроек проекта берётся из переменных окружения. Чтобы их определить, создайте файл `.env` рядом с `manage.py` и запишите туда данные в таком формате: `ПЕРЕМЕННАЯ=значение`.
+6. Run local server
+```
+python manage.py runserver
+```
 
-Доступны 2 переменные:
-- `DEBUG` — дебаг-режим. Поставьте True, чтобы увидеть отладочную информацию в случае ошибки.
-- `SECRET_KEY` — секретный ключ проекта
+7. Open `Pokemon map` at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-## Цели проекта
-
-Код написан в учебных целях — это урок в курсе по Python и веб-разработке на сайте [Devman](https://dvmn.org).
+8. Open `admin` panel at [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
