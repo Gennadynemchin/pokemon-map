@@ -14,7 +14,7 @@ class Pokemon(models.Model):
                                            on_delete=models.SET_NULL, verbose_name='предыдущий класс покемона')
 
     def __str__(self):
-        return f'{self.title_en}'
+        return self.title_en
 
 
 class PokemonEntity(models.Model):
