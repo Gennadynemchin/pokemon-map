@@ -52,6 +52,7 @@ def show_all_pokemons(request):
 
 def show_pokemon(request, pokemon_id):
     requested_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
+    next_pokemon = requested_pokemon.next_evolutions.first()
     pokemon = {
         "pokemon_id": requested_pokemon.id,
         "title_ru": requested_pokemon.title_ru,
@@ -66,8 +67,7 @@ def show_pokemon(request, pokemon_id):
             "pokemon_id": requested_pokemon.previous_evolution.id,
             "img_url": request.build_absolute_uri(requested_pokemon.previous_evolution.image.url)
         }
-    if requested_pokemon.next_evolutions.first():
-        next_pokemon = requested_pokemon.next_evolutions.first()
+    if next_pokemon:
         pokemon['next_evolution'] = {
             "title_ru": next_pokemon.title_ru,
             "pokemon_id": next_pokemon.id,
@@ -88,4 +88,3 @@ def show_pokemon(request, pokemon_id):
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon
     })
-

@@ -3,8 +3,8 @@ from django.db import models
 
 class Pokemon(models.Model):
     title_ru = models.CharField(max_length=200, verbose_name='название на русском')
-    title_en = models.CharField(max_length=200, verbose_name='название на английском')
-    title_jp = models.CharField(max_length=200, verbose_name='название на японском')
+    title_en = models.CharField(max_length=200, null=True, blank=True, verbose_name='название на английском')
+    title_jp = models.CharField(max_length=200, null=True, blank=True, verbose_name='название на японском')
     image = models.ImageField(null=True, blank=True, verbose_name='изображение')
     description = models.TextField(default='Pokemon description coming soon', blank=True, verbose_name='описание')
     previous_evolution = models.ForeignKey("self",
@@ -22,7 +22,7 @@ class PokemonEntity(models.Model):
     lon = models.FloatField(verbose_name='долгота')
     pokemon = models.ForeignKey(Pokemon,
                                 on_delete=models.PROTECT,
-                                related_name='pokemon_entities',
+                                related_name='entities',
                                 verbose_name='отношение к покемону')
     appeared_at = models.DateTimeField(null=True, blank=True, verbose_name='время появления на карте')
     disappeared_at = models.DateTimeField(null=True, blank=True, verbose_name='время исчезновения с карты')
